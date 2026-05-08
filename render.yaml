@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: royal-handsome
+    env: python
+    plan: free
+    buildCommand: echo "Sin dependencias — solo Python stdlib"
+    startCommand: python server.py
+    envVars:
+      - key: PORT
+        generateValue: false

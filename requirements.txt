@@ -1,0 +1,2 @@
+# Royal Handsome — sin dependencias externas (usa solo Python stdlib)
+# El servidor usa http.server, urllib y pathlib — incluidos en Python 3.x
