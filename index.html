@@ -276,7 +276,15 @@ function openDetail(cardEl) {
   detailProductId = id;
   detailSelectedSize = null;
 
-  document.getElementById('detailImg').src = p.img;
+  // Usar imagen -prenda si existe, si no la miniatura del catálogo
+  const detailImgEl = document.getElementById('detailImg');
+  const prendaUrl = cardEl.dataset.img ? `rh-assets/${cardEl.dataset.img}-prenda.jpg` : '';
+  if (prendaUrl) {
+    detailImgEl.onerror = () => { detailImgEl.src = p.img; detailImgEl.onerror = null; };
+    detailImgEl.src = prendaUrl;
+  } else {
+    detailImgEl.src = p.img;
+  }
   // Guardamos nombre y color en español como data attributes para que setLang los traduzca
   const detailNameEl = document.getElementById('detailName');
   detailNameEl.dataset.nameSp = p.name;
