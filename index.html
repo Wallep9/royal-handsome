@@ -208,7 +208,16 @@ function setLang(lang) {
   });
   // Precio en modal detalle si está abierto
   const dp = document.getElementById('detailPrice');
-  if (dp && dp.dataset.usd) dp.innerHTML = formatPrice(parseFloat(dp.dataset.usd), lang);
+  if (dp && dp.dataset.usd) {
+    if (dp.dataset.origUsd) {
+      const origUsd = parseFloat(dp.dataset.origUsd);
+      const saleUsd = parseFloat(dp.dataset.usd);
+      const pct = Math.round((1 - saleUsd / origUsd) * 100);
+      dp.innerHTML = `<span class="price-orig">${formatPrice(origUsd, lang)}</span> <span class="price-sale-num">${formatPrice(saleUsd, lang)}</span> <span style="background:var(--red);color:white;font-size:.5em;font-weight:800;padding:.15em .45em;border-radius:4px;vertical-align:middle">-${pct}%</span>`;
+    } else {
+      dp.innerHTML = formatPrice(parseFloat(dp.dataset.usd), lang);
+    }
+  }
   // Nombre y color del modal si está abierto
   const detailModal = document.getElementById('detailModal');
   if (detailModal && detailModal.classList.contains('open')) {
@@ -242,6 +251,8 @@ function setLang(lang) {
   });
   // Re-renderizar mini-cards de SALE y Más vendidos con el nuevo idioma
   if (typeof initSections === 'function') initSections();
+  // Actualizar estado abierto/cerrado de sucursales
+  if (typeof updateBranchStatus === 'function') updateBranchStatus();
 }
 
 /* ── Modal detalle producto ──────────────────────────────────────────────── */
@@ -280,8 +291,17 @@ function openDetail(cardEl) {
   detailDescEl.textContent = currentLang === 'en' ? (DESC_EN[parseInt(id)] || p.desc) : (DESC_ES[parseInt(id)] || p.desc);
 
   const dp = document.getElementById('detailPrice');
-  dp.dataset.usd = p.usd;
-  dp.innerHTML = formatPrice(parseFloat(p.usd), currentLang);
+  const saleUsd = cardEl.dataset.salePrice ? parseFloat(cardEl.dataset.salePrice) : null;
+  if (saleUsd) {
+    const pct = Math.round((1 - saleUsd / parseFloat(p.usd)) * 100);
+    dp.dataset.usd    = String(saleUsd);
+    dp.dataset.origUsd = p.usd;
+    dp.innerHTML = `<span class="price-orig">${formatPrice(parseFloat(p.usd), currentLang)}</span> <span class="price-sale-num">${formatPrice(saleUsd, currentLang)}</span> <span style="background:var(--red);color:white;font-size:.5em;font-weight:800;padding:.15em .45em;border-radius:4px;vertical-align:middle">-${pct}%</span>`;
+  } else {
+    dp.dataset.usd    = p.usd;
+    dp.dataset.origUsd = '';
+    dp.innerHTML = formatPrice(parseFloat(p.usd), currentLang);
+  }
 
   // Tallas
   const sizesEl = document.getElementById('detailSizes');
@@ -446,6 +466,11 @@ function closeDetail() {
       <span style="font-size:2.6rem">🔥</span>
     </div>
     <div id="saleGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-5"></div>
+    <p class="i18n text-xs mt-4" style="color:rgba(255,255,255,.5);font-style:italic;text-align:right"
+       data-es="* Oferta aplica a tallas seleccionadas (ej. XXL, XXXL) · Hasta agotar existencias"
+       data-en="* Offer applies to selected sizes (e.g. XXL, XXXL) · While stocks last">
+      * Oferta aplica a tallas seleccionadas (ej. XXL, XXXL) · Hasta agotar existencias
+    </p>
   </div>
 </section>
 
@@ -623,7 +648,7 @@ function closeDetail() {
         </div>
       </div>
     </article>
-    <article class="product-card" data-cat="polo" data-id="6" data-price="22"
+    <article class="product-card" data-cat="polo" data-id="6" data-price="22" data-sale-price="16"
              data-img="polo-basico-mostaza" data-desc="Mustard polo, 100% pima cotton, tonal collar" data-type="upper_body"
              data-name="Polo Básico" data-color="Mostaza" onclick="if(!event.target.closest('button'))openDetail(this)">
       <div class="card-tilt-glare"></div>
@@ -653,7 +678,7 @@ function closeDetail() {
         </div>
       </div>
     </article>
-    <article class="product-card" data-cat="tshirt" data-id="7" data-price="18"
+    <article class="product-card" data-cat="tshirt" data-id="7" data-price="18" data-sale-price="14"
              data-img="tshirt-london" data-desc="Yellow crew neck with iconic London print, pima cotton" data-type="upper_body"
              data-name="T-Shirt London" data-color="Amarillo" onclick="if(!event.target.closest('button'))openDetail(this)">
       <div class="card-tilt-glare"></div>
@@ -713,7 +738,7 @@ function closeDetail() {
         </div>
       </div>
     </article>
-    <article class="product-card" data-cat="hoodie" data-id="9" data-price="35"
+    <article class="product-card" data-cat="hoodie" data-id="9" data-price="35" data-sale-price="27"
              data-img="hoodie-liverpool-rojo" data-desc="Red hoodie Liverpool England print, pima cotton" data-type="upper_body"
              data-name="Hoodie Liverpool" data-color="Rojo" onclick="if(!event.target.closest('button'))openDetail(this)">
       <div class="card-tilt-glare"></div>
@@ -990,9 +1015,7 @@ function closeDetail() {
           <p class="flex items-center gap-2"><i class="fa-regular fa-envelope flex-shrink-0" style="color:var(--navy)"></i> lima@royalhandsome.com</p>
         </div>
         <div class="mt-4 pt-4 border-t border-gray-100">
-          <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style="background:#dcfce7;color:#15803d">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span> <span class="i18n" data-es="Abierto ahora" data-en="Open now">Abierto ahora</span>
-          </span>
+          <span id="status-lima"></span>
         </div>
       </div>
 
@@ -1007,9 +1030,7 @@ function closeDetail() {
           <p class="flex items-center gap-2"><i class="fa-regular fa-envelope flex-shrink-0" style="color:var(--navy)"></i> bogota@royalhandsome.com</p>
         </div>
         <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
-          <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style="background:#dcfce7;color:#15803d">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span> <span class="i18n" data-es="Abierto ahora" data-en="Open now">Abierto ahora</span>
-          </span>
+          <span id="status-bogota"></span>
           <span class="text-xs font-bold px-2 py-1 rounded" style="background:rgba(201,168,76,.15);color:var(--gold)">★ <span class="i18n" data-es="Casa Matriz" data-en="HQ">Casa Matriz</span></span>
         </div>
       </div>
@@ -1025,9 +1046,7 @@ function closeDetail() {
           <p class="flex items-center gap-2"><i class="fa-regular fa-envelope flex-shrink-0" style="color:var(--navy)"></i> miami@royalhandsome.com</p>
         </div>
         <div class="mt-4 pt-4 border-t border-gray-100">
-          <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style="background:#dbeafe;color:#1d4ed8">
-            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block"></span> Opens at 10am
-          </span>
+          <span id="status-miami"></span>
         </div>
       </div>
 
@@ -1155,6 +1174,55 @@ function initBadges(){
     b.dataset.en = labelEn;
     b.textContent = currentLang==='en' ? labelEn : labelEs;
     wrap.appendChild(b);
+  });
+}
+
+/* ── Branch open/closed status ── */
+function getBranchStatus(tz, lang) {
+  const now = new Date();
+  const fmt = (opts) => new Intl.DateTimeFormat('en-US', Object.assign({timeZone:tz}, opts)).format(now);
+  const h       = parseInt(fmt({hour:'numeric', hour12:false}));
+  const m       = parseInt(fmt({minute:'2-digit'}));
+  const weekday = fmt({weekday:'short'});  // 'Mon','Tue',...,'Sun'
+  const totalMin = h * 60 + m;
+  const isSun  = weekday === 'Sun';
+  const isSat  = weekday === 'Sat';
+  const openMin  = isSun ? 660 : 600;    // 11am or 10am
+  const closeMin = isSun ? 1080 : 1200;  // 6pm or 8pm
+  const isOpen   = totalMin >= openMin && totalMin < closeMin;
+
+  if (isOpen) {
+    const closeT = isSun ? '6pm' : '8pm';
+    return `<span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style="background:#dcfce7;color:#15803d">
+      <span class="w-1.5 h-1.5 rounded-full inline-block" style="background:#22c55e"></span>
+      ${lang==='en' ? 'Open · closes '+closeT : 'Abierto · cierra '+closeT}
+    </span>`;
+  }
+  let nextMsg;
+  if (totalMin < openMin) {
+    const openT = isSun ? '11am' : '10am';
+    nextMsg = lang==='en' ? 'Opens '+openT : 'Abre '+openT;
+  } else if (isSat) {
+    nextMsg = lang==='en' ? 'Opens Sun 11am' : 'Abre Dom 11am';
+  } else if (isSun) {
+    nextMsg = lang==='en' ? 'Opens Mon 10am' : 'Abre Lun 10am';
+  } else {
+    nextMsg = lang==='en' ? 'Opens tomorrow 10am' : 'Abre mañana 10am';
+  }
+  return `<span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style="background:#fee2e2;color:#dc2626">
+    <span class="w-1.5 h-1.5 rounded-full inline-block" style="background:#ef4444"></span>
+    ${lang==='en'?'Closed · ':'Cerrado · '}${nextMsg}
+  </span>`;
+}
+
+function updateBranchStatus() {
+  const lang = currentLang || 'es';
+  [{id:'status-lima',   tz:'America/Lima'},
+   {id:'status-bogota', tz:'America/Bogota'},
+   {id:'status-miami',  tz:'America/New_York'}
+  ].forEach(({id, tz}) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = getBranchStatus(tz, lang);
   });
 }
 
@@ -1629,6 +1697,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   setLang('es');
   initBadges();
   initSections();
+  updateBranchStatus();
+  setInterval(updateBranchStatus, 60000); // refresh every minute
 });
 </script>
 
