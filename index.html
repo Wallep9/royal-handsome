@@ -1586,8 +1586,9 @@ function showToast(msg) {
 (function(){
   var zoomScale = 1;
   var zoomImg = null;
-  var justPinched = false; // prevent pinch-end from triggering click-close
-  var lastTap = 0;         // for double-tap detection
+  var justPinched = false;   // prevent pinch-end from triggering click-close
+  var blockNextClick = false; // prevent double-tap from triggering click-close
+  var lastTap = 0;            // for double-tap detection
 
   window.openZoom = function(src) {
     zoomScale = 1;
@@ -1607,6 +1608,7 @@ function showToast(msg) {
   // Click/tap background to close (guard against pinch-end fake clicks)
   document.getElementById('imgZoom').addEventListener('click', function(e) {
     if (justPinched) { justPinched = false; return; }
+    if (blockNextClick) { blockNextClick = false; return; }
     closeZoom();
   });
 
@@ -1632,11 +1634,14 @@ function showToast(msg) {
     } else if (e.touches.length === 1) {
       // Double-tap detection
       var now = Date.now();
-      if (now - lastTap < 280) {
+      if (now - lastTap < 300) {
         // Double tap: toggle zoom 1x ↔ 2.5x
         zoomScale = zoomScale > 1.2 ? 1 : 2.5;
         if (zoomImg) zoomImg.style.transform = 'scale(' + zoomScale + ')';
+        blockNextClick = true; // stop the imminent click from closing the zoom
+        lastTap = 0; // reset so triple-tap doesn't re-trigger
         e.preventDefault();
+        return;
       }
       lastTap = now;
     }
