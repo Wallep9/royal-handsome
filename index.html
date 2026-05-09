@@ -118,10 +118,14 @@
     #lb-info{margin-top:1.5rem;text-align:center;color:rgba(255,255,255,.7);font-size:.85rem;letter-spacing:.04em}
     #lb-hint{margin-top:.5rem;color:rgba(255,255,255,.35);font-size:.72rem;letter-spacing:.08em}
 
-    /* ── WhatsApp */
-    #waBtn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:800;display:flex;align-items:center;gap:.55rem;background:#25D366;color:#fff;font-size:.82rem;font-weight:600;padding:.7rem 1.15rem .7rem .85rem;border-radius:2rem;box-shadow:0 4px 18px rgba(37,211,102,.45);text-decoration:none;transition:transform .2s,box-shadow .2s}
+    /* ── Botones flotantes (WhatsApp + Telegram) */
+    #floatingBtns{position:fixed;bottom:1.5rem;right:1.5rem;z-index:800;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem}
+    #waBtn,#tgBtn{display:flex;align-items:center;gap:.55rem;font-size:.82rem;font-weight:600;padding:.7rem 1.15rem .7rem .85rem;border-radius:2rem;text-decoration:none;transition:transform .2s,box-shadow .2s;color:#fff}
+    #waBtn{background:#25D366;box-shadow:0 4px 18px rgba(37,211,102,.45)}
     #waBtn:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(37,211,102,.6)}
-    #waBtn svg{width:1.4rem;height:1.4rem;flex-shrink:0}
+    #tgBtn{background:#229ED9;box-shadow:0 4px 18px rgba(34,158,217,.45)}
+    #tgBtn:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(34,158,217,.6)}
+    #waBtn svg,#tgBtn svg{width:1.4rem;height:1.4rem;flex-shrink:0}
     /* Lang toggle */
     .lang-btn{font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:.28rem .6rem;border-radius:.25rem;border:1.5px solid rgba(255,255,255,.35);color:rgba(255,255,255,.65);background:transparent;cursor:pointer;transition:all .18s;text-transform:uppercase}
     .lang-btn.active{background:var(--gold);border-color:var(--gold);color:var(--navy)}
@@ -1502,10 +1506,16 @@ document.addEventListener('DOMContentLoaded',()=>{
   </div>
 </div>
 
-<a id="waBtn" href="https://wa.me/573228756152?text=Hola%2C+me+interesa+un+producto+de+Royal+Handsome" target="_blank" rel="noopener">
-  <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-  <span class="i18n" data-es="WhatsApp" data-en="WhatsApp">WhatsApp</span>
-</a>
+<div id="floatingBtns">
+  <a id="tgBtn" href="https://t.me/CoreUnityAI_bot?start=RH_WEB" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+    <span class="i18n" data-es="Telegram" data-en="Telegram">Telegram</span>
+  </a>
+  <a id="waBtn" href="https://wa.me/573228756152?text=Hola%2C+me+interesa+un+producto+de+Royal+Handsome" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span class="i18n" data-es="WhatsApp" data-en="WhatsApp">WhatsApp</span>
+  </a>
+</div>
 
 </body>
 </html>
