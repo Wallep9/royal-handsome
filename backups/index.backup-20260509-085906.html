@@ -3,25 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Royal Handsome — Estilo británico para el caballero moderno</title>
-  <meta name="description" content="Chaquetas, polos, hoodies y t-shirts inspirados en la elegancia británica. 100% Algodón Pima. Envío a Lima, Bogotá y Miami. Probador virtual con IA.">
-  <meta name="keywords" content="moda hombre, chaquetas, polos, hoodies, royal handsome, ropa premium, estilo británico, algodón pima">
-  <meta name="theme-color" content="#1E1B5E">
-  <link rel="icon" type="image/png" href="/rh-assets/logo.png">
-  <link rel="apple-touch-icon" href="/rh-assets/logo.png">
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Royal Handsome — Estilo británico para el caballero moderno">
-  <meta property="og:description" content="Chaquetas, polos, hoodies premium · 100% Algodón Pima · Envío a Lima, Bogotá y Miami · Probador virtual con IA.">
-  <meta property="og:image" content="/rh-assets/logo.png">
-  <meta property="og:url" content="https://royal-handsome.onrender.com">
-  <meta property="og:site_name" content="Royal Handsome">
-  <meta property="og:locale" content="es_ES">
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Royal Handsome — Estilo británico para el caballero moderno">
-  <meta name="twitter:description" content="Chaquetas, polos, hoodies premium · Hecho para durar.">
-  <meta name="twitter:image" content="/rh-assets/logo.png">
+  <title>Royal Handsome v2 ★</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,69 +24,6 @@
     .hero{background:var(--navy);position:relative}
     .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 80px)}
     .hero-badge{border:2px solid var(--gold);color:var(--gold);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;padding:.35rem .9rem;border-radius:2px;display:inline-block}
-    @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
-
-    /* Value Props bar */
-    .vp-icon{width:42px;height:42px;border-radius:50%;background:rgba(30,27,94,.08);color:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem}
-    .vp-title{font-size:.85rem;font-weight:700;color:var(--navy);line-height:1.2}
-    .vp-sub{font-size:.72rem;color:#6b7280;margin-top:.1rem}
-
-    /* Story / Manifesto */
-    .story-section{background:linear-gradient(180deg,#fff 0%,var(--off) 100%);padding:5rem 1rem}
-    .story-quote{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:1.5rem;color:var(--navy);line-height:1.5;position:relative;padding:0 1rem}
-    .story-quote::before,.story-quote::after{content:'"';color:var(--gold);font-size:3rem;font-weight:700;line-height:0;vertical-align:-.4em}
-    .story-stat{text-align:center}
-    .story-stat .num{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:800;color:var(--navy);line-height:1}
-    .story-stat .lbl{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:#6b7280;margin-top:.4rem}
-
-    /* Testimonials */
-    .testi-card{background:white;border-radius:1.25rem;border:1px solid rgba(0,0,0,.07);padding:1.75rem;display:flex;flex-direction:column;gap:1rem;transition:transform .2s,box-shadow .2s;height:100%}
-    .testi-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(30,27,94,.10)}
-    .testi-stars{color:var(--gold);font-size:1rem;letter-spacing:.1em}
-    .testi-text{font-size:.92rem;color:#374151;line-height:1.6;flex:1}
-    .testi-author{display:flex;align-items:center;gap:.75rem;padding-top:1rem;border-top:1px solid #f3f4f6}
-    .testi-avatar{width:44px;height:44px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;flex-shrink:0}
-    .testi-name{font-weight:700;color:var(--navy);font-size:.88rem}
-    .testi-loc{font-size:.72rem;color:#9ca3af;margin-top:.1rem}
-
-    /* SALE countdown */
-    .countdown-box{display:inline-flex;gap:.4rem;align-items:center;background:rgba(0,0,0,.35);padding:.5rem .8rem;border-radius:.6rem;backdrop-filter:blur(8px)}
-    .cd-num{font-family:'Playfair Display',serif;font-weight:800;font-size:1.4rem;color:white;background:rgba(255,255,255,.12);padding:.15rem .5rem;border-radius:.35rem;min-width:2.4rem;text-align:center;display:inline-block}
-    .cd-sep{color:rgba(255,255,255,.6);font-weight:700}
-    .cd-lbl{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:.15rem;text-align:center}
-    .stock-bar{height:5px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden;margin-top:.4rem}
-    .stock-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),#f59e0b);border-radius:99px;transition:width .8s ease}
-
-    /* Sticky mobile bar */
-    #stickyBar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #e5e7eb;display:none;align-items:center;justify-content:space-around;padding:.6rem .75rem;z-index:150;box-shadow:0 -4px 20px rgba(0,0,0,.08)}
-    #stickyBar a,#stickyBar button{display:flex;flex-direction:column;align-items:center;gap:.15rem;font-size:.65rem;font-weight:700;color:var(--navy);padding:.4rem .6rem;border-radius:.6rem;border:none;background:transparent;cursor:pointer;flex:1;text-decoration:none}
-    #stickyBar a:hover,#stickyBar button:hover{background:var(--off)}
-    #stickyBar i{font-size:1.15rem;margin-bottom:.1rem}
-    #stickyBar .sb-cta{background:var(--navy);color:white;padding:.55rem 1rem;border-radius:.7rem;font-size:.8rem;flex:1.6}
-    #stickyBar .sb-cta i{color:var(--gold)}
-    @media(max-width:768px){
-      #stickyBar{display:flex}
-      body{padding-bottom:72px}
-      #waBtn{bottom:80px!important}
-    }
-
-    /* Newsletter popup */
-    #nlPopup{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
-    #nlPopup.open{display:flex;animation:nlFade .3s ease}
-    @keyframes nlFade{from{opacity:0}to{opacity:1}}
-    #nlBox{background:white;border-radius:1.25rem;max-width:440px;width:100%;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:nlSlide .35s cubic-bezier(.4,0,.2,1)}
-    @keyframes nlSlide{from{transform:translateY(30px) scale(.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
-    #nlClose{position:absolute;top:.6rem;right:.7rem;background:rgba(0,0,0,.05);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.2rem;color:#666;z-index:2;display:flex;align-items:center;justify-content:center}
-    #nlClose:hover{background:rgba(0,0,0,.1)}
-    .nl-header{background:var(--navy);color:white;padding:2rem 1.5rem 1.5rem;text-align:center;position:relative;overflow:hidden}
-    .nl-header::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(201,168,76,.18),transparent 50%);pointer-events:none}
-    .nl-discount{font-family:'Playfair Display',serif;font-size:3rem;font-weight:800;color:var(--gold);line-height:1;margin:.4rem 0;position:relative}
-    .nl-body{padding:1.5rem;text-align:center}
-    .nl-input{width:100%;padding:.85rem 1rem;border:1.5px solid #e5e7eb;border-radius:.7rem;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .15s}
-    .nl-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(30,27,94,.1)}
-    .nl-btn{width:100%;background:var(--red);color:white;padding:.9rem;border:none;border-radius:.7rem;font-weight:700;font-size:.9rem;cursor:pointer;margin-top:.75rem;transition:opacity .2s}
-    .nl-btn:hover{opacity:.88}
-    .nl-skip{background:none;border:none;color:#9ca3af;font-size:.78rem;cursor:pointer;margin-top:.85rem;text-decoration:underline}
 
     /* Category tabs */
     .cat-tab{padding:.6rem 1.4rem;border-radius:999px;font-size:.875rem;font-weight:600;cursor:pointer;transition:all .15s;border:1.5px solid transparent;white-space:nowrap;background:white;color:#555;border-color:#ddd}
@@ -494,41 +413,28 @@ function closeDetail() {
 </nav>
 
 <!-- HERO -->
-<section class="hero text-white py-16 md:py-24 px-4" style="position:relative;overflow:hidden">
-  <!-- Decorative gold rays -->
-  <div style="position:absolute;top:-50%;left:-10%;width:60%;height:200%;background:radial-gradient(circle,rgba(201,168,76,.10) 0%,transparent 60%);pointer-events:none"></div>
+<section class="hero text-white py-14 md:py-20 px-4" style="position:relative">
   <div class="max-w-7xl mx-auto relative z-10 flex items-center justify-between gap-8">
     <div class="flex-1 min-w-0">
-    <div class="flex items-center gap-3 mb-4">
-      <span class="hero-badge inline-block i18n" data-es="✦ Colección 2026" data-en="✦ Collection 2026">✦ Colección 2026</span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold" style="background:var(--gold);color:var(--navy)">
-        <span style="width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse-dot 1.6s ease-in-out infinite"></span>
-        <span class="i18n" data-es="SALE -40% activo" data-en="SALE -40% live">SALE -40% activo</span>
-      </span>
-    </div>
+    <span class="hero-badge mb-4 inline-block i18n" data-es="Colección 2026" data-en="Collection 2026">Colección 2026</span>
     <h1 class="font-royal text-5xl md:text-7xl font-bold leading-none mt-2">
-      Royal<br><span style="color:var(--gold)">Handsome</span>
+      Royal<br><span style="color:#fca5a5">Handsome</span>
     </h1>
-    <p class="mt-5 text-lg md:text-xl font-light max-w-xl leading-relaxed" style="color:rgba(255,255,255,.85)">
-      <span class="i18n" data-es="Estilo británico para el caballero moderno." data-en="British style for the modern gentleman.">Estilo británico para el caballero moderno.</span>
+    <p class="mt-4 text-lg max-w-md" style="color:rgba(255,255,255,.65)">
+      <span class="i18n" data-es="Authentic Quality · Finest Apparel&lt;br&gt;100% Algodón Pima — Hecho para durar." data-en="Authentic Quality · Finest Apparel&lt;br&gt;100% Pima Cotton — Built to Last.">Authentic Quality · Finest Apparel<br>100% Algodón Pima — Hecho para durar.</span>
     </p>
-    <p class="mt-2 text-sm md:text-base max-w-xl" style="color:rgba(255,255,255,.55)">
-      <span class="i18n" data-es="100% Algodón Pima · Hecho para durar · Envío a Lima, Bogotá y Miami" data-en="100% Pima Cotton · Built to last · Shipping to Lima, Bogotá & Miami">100% Algodón Pima · Hecho para durar · Envío a Lima, Bogotá y Miami</span>
-    </p>
-    <div class="mt-8 flex flex-wrap gap-3">
-      <a href="#catalogo" class="font-bold px-7 py-3.5 rounded-xl text-sm tracking-wide uppercase transition flex items-center gap-2 hover:opacity-90" style="background:var(--gold);color:var(--navy);box-shadow:0 8px 24px rgba(201,168,76,.35)">
-        <i class="fa-solid fa-bag-shopping"></i>
-        <span class="i18n" data-es="Ver Colección" data-en="Shop Collection">Ver Colección</span>
+    <div class="mt-7 flex flex-wrap gap-4">
+      <a href="#catalogo" class="font-bold px-7 py-3 rounded-xl text-sm tracking-wide uppercase transition" style="background:var(--red);color:white">
+        <span class="i18n" data-es="Ver catálogo" data-en="View Catalog">Ver catálogo</span>
       </a>
-      <a href="#sale" class="font-bold px-7 py-3.5 rounded-xl text-sm tracking-wide uppercase transition flex items-center gap-2 hover:opacity-90" style="background:var(--red);color:white;box-shadow:0 8px 24px rgba(200,16,46,.35)">
-        <i class="fa-solid fa-fire"></i>
-        <span class="i18n" data-es="Ver SALE" data-en="View SALE">Ver SALE</span>
-      </a>
+      <button onmousedown="event.stopPropagation()" onclick="openPanel(null)" class="border-2 font-bold px-7 py-3 rounded-xl text-sm tracking-wide uppercase flex items-center gap-2 transition" style="border-color:rgba(255,255,255,.35);color:white">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> <span class="i18n" data-es="Probar con IA" data-en="Try on with AI">Probar con IA</span>
+      </button>
     </div>
     <div class="mt-10 flex flex-wrap gap-8">
-      <div><p class="font-royal text-3xl font-bold" style="color:var(--gold)">2,500+</p><p class="text-xs uppercase tracking-widest mt-1" style="color:rgba(255,255,255,.55)"><span class="i18n" data-es="Caballeros vestidos" data-en="Gentlemen dressed">Caballeros vestidos</span></p></div>
-      <div><p class="font-royal text-3xl font-bold" style="color:var(--gold)">4.9 ★</p><p class="text-xs uppercase tracking-widest mt-1" style="color:rgba(255,255,255,.55)"><span class="i18n" data-es="Calificación promedio" data-en="Average rating">Calificación promedio</span></p></div>
-      <div><p class="font-royal text-3xl font-bold" style="color:var(--gold)">3</p><p class="text-xs uppercase tracking-widest mt-1" style="color:rgba(255,255,255,.55)"><span class="i18n" data-es="Sucursales" data-en="Branches">Sucursales</span></p></div>
+      <div class="text-center"><p class="font-royal text-3xl font-bold">12</p><p class="text-xs uppercase tracking-widest mt-1" style="color:rgba(255,255,255,.45)"><span class="i18n" data-es="Prendas" data-en="Garments">Prendas</span></p></div>
+      <div class="text-center"><p class="font-royal text-3xl font-bold">4</p><p class="text-xs uppercase tracking-widest mt-1" style="color:rgba(255,255,255,.45)"><span class="i18n" data-es="Categorías" data-en="Categories">Categorías</span></p></div>
+      <div class="text-center"><p class="font-royal text-3xl font-bold">IA</p><p class="text-xs uppercase tracking-widest mt-1" style="color:rgba(255,255,255,.45)"><span class="i18n" data-es="Probador virtual" data-en="Virtual Try-On">Probador virtual</span></p></div>
     </div>
     </div><!-- /hero-text-col -->
 
@@ -543,59 +449,15 @@ function closeDetail() {
 </section>
 <div class="uj-stripe"></div>
 
-<!-- ═══════ VALUE PROPS BAR ═══════ -->
-<section class="py-5 px-4" style="background:white;border-bottom:1px solid #eee">
-  <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="flex items-center gap-3">
-      <div class="vp-icon"><i class="fa-solid fa-truck-fast"></i></div>
-      <div>
-        <p class="vp-title i18n" data-es="Envío gratis" data-en="Free shipping">Envío gratis</p>
-        <p class="vp-sub i18n" data-es="En compras +$50 USD" data-en="On orders over $50">En compras +$50 USD</p>
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <div class="vp-icon"><i class="fa-solid fa-rotate-left"></i></div>
-      <div>
-        <p class="vp-title i18n" data-es="30 días devolución" data-en="30-day returns">30 días devolución</p>
-        <p class="vp-sub i18n" data-es="Sin preguntas" data-en="No questions asked">Sin preguntas</p>
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <div class="vp-icon"><i class="fa-solid fa-shield-halved"></i></div>
-      <div>
-        <p class="vp-title i18n" data-es="Pago 100% seguro" data-en="100% secure payment">Pago 100% seguro</p>
-        <p class="vp-sub i18n" data-es="Visa · Mastercard · Yape" data-en="Visa · Mastercard · Yape">Visa · Mastercard · Yape</p>
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <div class="vp-icon"><i class="fa-solid fa-store"></i></div>
-      <div>
-        <p class="vp-title i18n" data-es="3 sucursales" data-en="3 branches">3 sucursales</p>
-        <p class="vp-sub i18n" data-es="Lima · Bogotá · Miami" data-en="Lima · Bogotá · Miami">Lima · Bogotá · Miami</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══════ SALE ═══════ -->
-<section id="sale" class="sale-section py-10 px-4">
+<section class="sale-section py-10 px-4">
   <div class="max-w-7xl mx-auto">
-    <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+    <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
       <div>
         <span class="font-royal" style="background:white;color:var(--red);font-weight:900;font-size:1.9rem;letter-spacing:.1em;padding:.1rem .9rem;border-radius:5px;display:inline-block">SALE</span>
-        <p class="i18n" style="color:rgba(255,255,255,.75);font-size:.88rem;margin-top:.4rem" data-es="🔥 Hasta -40% · Termina pronto" data-en="🔥 Up to -40% off · Ends soon">🔥 Hasta -40% · Termina pronto</p>
+        <p class="i18n" style="color:rgba(255,255,255,.75);font-size:.88rem;margin-top:.4rem" data-es="Ofertas por tiempo limitado" data-en="Limited time offers">Ofertas por tiempo limitado</p>
       </div>
-      <!-- Countdown -->
-      <div class="flex flex-col items-end gap-1">
-        <p class="text-xs i18n" style="color:rgba(255,255,255,.7);letter-spacing:.1em;text-transform:uppercase" data-es="Termina en" data-en="Ends in">Termina en</p>
-        <div class="countdown-box">
-          <div class="flex flex-col items-center"><span class="cd-num" id="cdH">00</span><span class="cd-lbl i18n" data-es="Horas" data-en="Hours">Horas</span></div>
-          <span class="cd-sep">:</span>
-          <div class="flex flex-col items-center"><span class="cd-num" id="cdM">00</span><span class="cd-lbl i18n" data-es="Min" data-en="Min">Min</span></div>
-          <span class="cd-sep">:</span>
-          <div class="flex flex-col items-center"><span class="cd-num" id="cdS">00</span><span class="cd-lbl i18n" data-es="Seg" data-en="Sec">Seg</span></div>
-        </div>
-      </div>
+      <span style="font-size:2.6rem">🔥</span>
     </div>
     <div id="saleGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-5"></div>
     <p class="i18n text-xs mt-4" style="color:rgba(255,255,255,.5);font-style:italic;text-align:right"
@@ -1114,81 +976,6 @@ function closeDetail() {
 </aside>
 
 
-<!-- ═══════ NUESTRA HISTORIA ═══════ -->
-<section class="story-section">
-  <div class="max-w-5xl mx-auto text-center">
-    <span class="hero-badge mb-4 inline-block" style="border-color:var(--navy);color:var(--navy)"><span class="i18n" data-es="Nuestra historia" data-en="Our story">Nuestra historia</span></span>
-    <h2 class="font-royal text-4xl md:text-5xl font-bold mt-4 mb-6" style="color:var(--navy)"><span class="i18n" data-es="Hecho para el caballero moderno" data-en="Made for the modern gentleman">Hecho para el caballero moderno</span></h2>
-    <p class="story-quote max-w-3xl mx-auto">
-      <span class="i18n" data-es="Inspirados en la elegancia atemporal de Londres, vestimos al hombre que entiende que el detalle lo es todo." data-en="Inspired by the timeless elegance of London, we dress the man who understands that the detail is everything.">
-        Inspirados en la elegancia atemporal de Londres, vestimos al hombre que entiende que el detalle lo es todo.
-      </span>
-    </p>
-    <p class="mt-7 text-base md:text-lg max-w-2xl mx-auto leading-relaxed" style="color:#4b5563">
-      <span class="i18n" data-es="Cada prenda Royal Handsome se confecciona en Algodón Pima 100%, con costuras reforzadas y acabados que perduran. No seguimos modas: creamos clásicos." data-en="Every Royal Handsome garment is crafted from 100% Pima Cotton, with reinforced stitching and finishes that last. We don't follow trends: we create classics.">
-        Cada prenda Royal Handsome se confecciona en Algodón Pima 100%, con costuras reforzadas y acabados que perduran. No seguimos modas: creamos clásicos.
-      </span>
-    </p>
-    <div class="grid grid-cols-3 gap-4 mt-12 max-w-2xl mx-auto">
-      <div class="story-stat"><p class="num">2018</p><p class="lbl i18n" data-es="Fundada" data-en="Founded">Fundada</p></div>
-      <div class="story-stat"><p class="num">100%</p><p class="lbl i18n" data-es="Algodón Pima" data-en="Pima Cotton">Algodón Pima</p></div>
-      <div class="story-stat"><p class="num">3</p><p class="lbl i18n" data-es="Países" data-en="Countries">Países</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ TESTIMONIOS ═══════ -->
-<section class="py-14 px-4" style="background:white">
-  <div class="max-w-7xl mx-auto">
-    <div class="text-center mb-10">
-      <span class="hero-badge inline-block" style="border-color:var(--gold);color:var(--gold)">★ ★ ★ ★ ★</span>
-      <h2 class="font-royal text-3xl md:text-4xl font-bold mt-4" style="color:var(--navy)"><span class="i18n" data-es="Lo que dicen nuestros caballeros" data-en="What our gentlemen say">Lo que dicen nuestros caballeros</span></h2>
-      <p class="mt-2 text-sm text-gray-500"><span class="i18n" data-es="Calificación promedio 4.9/5 · Basado en 312 reseñas verificadas" data-en="4.9/5 average rating · Based on 312 verified reviews">Calificación promedio 4.9/5 · Basado en 312 reseñas verificadas</span></p>
-    </div>
-    <div class="grid md:grid-cols-3 gap-5">
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text i18n" data-es="“La calidad supera por completo lo que esperaba. La chaqueta Oxford es ahora mi favorita — el corte es impecable y el algodón se siente premium.”" data-en="“The quality completely exceeded what I expected. The Oxford jacket is now my favorite — the cut is impeccable and the cotton feels premium.”">
-          “La calidad supera por completo lo que esperaba. La chaqueta Oxford es ahora mi favorita — el corte es impecable y el algodón se siente premium.”
-        </p>
-        <div class="testi-author">
-          <div class="testi-avatar">CM</div>
-          <div>
-            <p class="testi-name">Carlos Mendoza</p>
-            <p class="testi-loc i18n" data-es="Lima, Perú · Compra verificada" data-en="Lima, Peru · Verified purchase">Lima, Perú · Compra verificada</p>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text i18n" data-es="“El probador con IA me ahorró devoluciones. Pedí dos polos y me quedaron perfectos a la primera. Servicio rápido y empaque cuidado.”" data-en="“The AI try-on saved me from returns. I ordered two polos and they fit perfectly the first time. Fast service and careful packaging.”">
-          “El probador con IA me ahorró devoluciones. Pedí dos polos y me quedaron perfectos a la primera. Servicio rápido y empaque cuidado.”
-        </p>
-        <div class="testi-author">
-          <div class="testi-avatar">JR</div>
-          <div>
-            <p class="testi-name">Javier Restrepo</p>
-            <p class="testi-loc i18n" data-es="Bogotá, Colombia · Compra verificada" data-en="Bogotá, Colombia · Verified purchase">Bogotá, Colombia · Compra verificada</p>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text i18n" data-es="“Encontré la marca por Instagram y desde la primera compra soy fiel. El hoodie Liverpool es lo más cómodo que tengo. Volveré por la chaqueta GP.”" data-en="“Found the brand on Instagram and I've been loyal since the first purchase. The Liverpool hoodie is the most comfortable thing I own. Coming back for the GP jacket.”">
-          “Encontré la marca por Instagram y desde la primera compra soy fiel. El hoodie Liverpool es lo más cómodo que tengo. Volveré por la chaqueta GP.”
-        </p>
-        <div class="testi-author">
-          <div class="testi-avatar">DS</div>
-          <div>
-            <p class="testi-name">Daniel Suárez</p>
-            <p class="testi-loc i18n" data-es="Miami, USA · Compra verificada" data-en="Miami, USA · Verified purchase">Miami, USA · Compra verificada</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- SUCURSALES -->
 <section style="background:var(--navy)" class="py-14 px-4">
   <div class="max-w-7xl mx-auto">
@@ -1289,9 +1076,9 @@ const PRODUCTS = [
 
 /* ── SALE / BEST-SELLERS / STOCK DATA ── */
 const SALE_DATA = [
-  {id:9, salePrice:27, saleSizes:['XXL'],         stockLeft:3, stockTotal:12}, // Hoodie Liverpool Rojo
-  {id:6, salePrice:16, saleSizes:['XXL','XXXL'],  stockLeft:5, stockTotal:15}, // Polo Básico Mostaza
-  {id:7, salePrice:14, saleSizes:['XXL','XXXL'],  stockLeft:7, stockTotal:18}, // T-Shirt London
+  {id:9, salePrice:27, saleSizes:['XXL']},           // Hoodie Liverpool Rojo: $35 → $27
+  {id:6, salePrice:16, saleSizes:['XXL','XXXL']},   // Polo Básico Mostaza:   $22 → $16
+  {id:7, salePrice:14, saleSizes:['XXL','XXXL']},   // T-Shirt London:        $18 → $14
 ];
 const BEST_IDS   = [1, 3, 4, 11];
 const LOW_STOCK_IDS = [2, 8, 10, 12];
@@ -1334,34 +1121,22 @@ function makeMiniCard(id, opts){
   const _clickFn = opts.salePrice
     ? `openDetailSaleById(${id})`
     : `openDetail(_getCardEl(${id}))`;
-  let stockHtml = '';
-  if (opts.stockLeft && opts.stockTotal) {
-    const pctLeft = Math.round((opts.stockLeft / opts.stockTotal) * 100);
-    const sLabel = currentLang === 'en'
-      ? `Only <b>${opts.stockLeft}</b> left!`
-      : `¡Solo quedan <b>${opts.stockLeft}</b>!`;
-    stockHtml = `<div style="padding:0 1rem .8rem">
-      <p style="font-size:.7rem;color:var(--red);font-weight:600">${sLabel}</p>
-      <div class="stock-bar" style="background:rgba(0,0,0,.08)"><div class="stock-bar-fill" style="width:${pctLeft}%"></div></div>
-    </div>`;
-  }
   return `<div class="sale-card" onclick="${_clickFn}">
   <div style="position:relative;background:#F0F1F8;aspect-ratio:1/1;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:8%">
     <img src="${imgSrc}" style="width:100%;height:100%;object-fit:contain" loading="lazy">
     ${badgePct}${badgeBest}
   </div>
-  <div style="padding:.7rem 1rem .5rem">
+  <div style="padding:.7rem 1rem .9rem">
     <p style="font-size:.78rem;font-weight:700;color:var(--navy);margin-bottom:.1rem">${displayName}</p>
     <p style="font-size:.7rem;color:#888;margin-bottom:.35rem">${displayColor}</p>
     <div style="font-size:.85rem;font-weight:700">${priceHtml}</div>
   </div>
-  ${stockHtml}
 </div>`;
 }
 
 function initSections(){
   const sg = document.getElementById('saleGrid');
-  if (sg) sg.innerHTML = SALE_DATA.map(s => makeMiniCard(s.id, {salePrice:s.salePrice, saleSizes:s.saleSizes, stockLeft:s.stockLeft, stockTotal:s.stockTotal})).join('');
+  if (sg) sg.innerHTML = SALE_DATA.map(s => makeMiniCard(s.id, {salePrice:s.salePrice, saleSizes:s.saleSizes})).join('');
   const bg = document.getElementById('bestGrid');
   if (bg) bg.innerHTML = BEST_IDS.map(id => makeMiniCard(id, {best:true})).join('');
 }
@@ -1898,68 +1673,12 @@ function showToast(msg) {
   });
 })();
 
-/* ── SALE Countdown ── */
-function initSaleCountdown(){
-  // Persistent end time: stored in localStorage, refreshes every 24h
-  let endTs = parseInt(localStorage.getItem('rh_sale_end') || '0', 10);
-  const now = Date.now();
-  if (!endTs || endTs < now) {
-    endTs = now + 24 * 60 * 60 * 1000; // 24h from now
-    localStorage.setItem('rh_sale_end', String(endTs));
-  }
-  const tick = () => {
-    const diff = Math.max(0, endTs - Date.now());
-    const h = Math.floor(diff / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    const pad = (n) => String(n).padStart(2,'0');
-    const eH = document.getElementById('cdH');
-    const eM = document.getElementById('cdM');
-    const eS = document.getElementById('cdS');
-    if (eH) eH.textContent = pad(h);
-    if (eM) eM.textContent = pad(m);
-    if (eS) eS.textContent = pad(s);
-  };
-  tick();
-  setInterval(tick, 1000);
-}
-
-/* ── Newsletter popup ── */
-function initNewsletterPopup(){
-  if (localStorage.getItem('rh_nl_dismissed')) return;
-  setTimeout(() => {
-    const p = document.getElementById('nlPopup');
-    if (p) p.classList.add('open');
-  }, 18000); // appears after 18s
-}
-window.closeNewsletter = function(){
-  const p = document.getElementById('nlPopup');
-  if (p) p.classList.remove('open');
-  localStorage.setItem('rh_nl_dismissed', '1');
-};
-window.submitNewsletter = function(e){
-  e.preventDefault();
-  const input = document.getElementById('nlEmail');
-  const email = (input && input.value || '').trim();
-  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-    showToast(currentLang==='en'?'⚠️ Please enter a valid email':'⚠️ Ingresa un email válido');
-    return false;
-  }
-  localStorage.setItem('rh_nl_email', email);
-  localStorage.setItem('rh_nl_dismissed', '1');
-  showToast(currentLang==='en'?'🎉 Code sent! Check your inbox':'🎉 Código enviado a tu correo');
-  closeNewsletter();
-  return false;
-};
-
 document.addEventListener('DOMContentLoaded',()=>{
   setLang('es');
   initBadges();
   initSections();
   updateBranchStatus();
   setInterval(updateBranchStatus, 60000); // refresh every minute
-  initSaleCountdown();
-  initNewsletterPopup();
 
   // Delegated: clicking a size tag on a catalog card selects/deselects it
   document.getElementById('productGrid').addEventListener('click', function(e) {
@@ -2014,51 +1733,6 @@ document.addEventListener('DOMContentLoaded',()=>{
           <span class="i18n" data-es="Probar IA" data-en="Try on AI">Probar IA</span>
         </button>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════ STICKY MOBILE BAR ═══════ -->
-<nav id="stickyBar">
-  <a href="#catalogo" aria-label="Catalog">
-    <i class="fa-solid fa-shirt"></i>
-    <span class="i18n" data-es="Catálogo" data-en="Shop">Catálogo</span>
-  </a>
-  <a href="#sale" aria-label="Sale">
-    <i class="fa-solid fa-fire" style="color:var(--red)"></i>
-    <span>SALE</span>
-  </a>
-  <button onclick="openCart()" class="sb-cta" aria-label="Cart">
-    <i class="fa-solid fa-bag-shopping"></i>
-    <span class="i18n" data-es="Mi carrito" data-en="My cart">Mi carrito</span>
-  </button>
-  <a href="https://wa.me/573228756152?text=Hola%2C+me+interesa+un+producto+de+Royal+Handsome" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <i class="fa-brands fa-whatsapp" style="color:#25D366"></i>
-    <span>Chat</span>
-  </a>
-</nav>
-
-<!-- ═══════ NEWSLETTER POPUP ═══════ -->
-<div id="nlPopup" onclick="if(event.target===this)closeNewsletter()">
-  <div id="nlBox">
-    <button id="nlClose" onclick="closeNewsletter()">×</button>
-    <div class="nl-header">
-      <p style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;position:relative" class="i18n" data-es="Bienvenido a Royal Handsome" data-en="Welcome to Royal Handsome">Bienvenido a Royal Handsome</p>
-      <p class="nl-discount">-10%</p>
-      <p class="font-royal" style="font-size:1.3rem;position:relative" class="i18n" data-es="En tu primera compra" data-en="On your first order">En tu primera compra</p>
-    </div>
-    <div class="nl-body">
-      <p style="font-size:.88rem;color:#4b5563;line-height:1.5" class="i18n" data-es="Suscríbete y recibe un código de 10% OFF + acceso anticipado a colecciones nuevas." data-en="Subscribe and get a 10% OFF code + early access to new collections.">
-        Suscríbete y recibe un código de 10% OFF + acceso anticipado a colecciones nuevas.
-      </p>
-      <form onsubmit="return submitNewsletter(event)" style="margin-top:1rem">
-        <input id="nlEmail" type="email" required class="nl-input" placeholder="tu@email.com" autocomplete="email">
-        <button type="submit" class="nl-btn">
-          <i class="fa-solid fa-envelope-open-text"></i>
-          <span class="i18n" data-es="&nbsp;&nbsp;Quiero mi 10% OFF" data-en="&nbsp;&nbsp;Get my 10% OFF">&nbsp;&nbsp;Quiero mi 10% OFF</span>
-        </button>
-      </form>
-      <button class="nl-skip" onclick="closeNewsletter()"><span class="i18n" data-es="No, gracias — pagaré precio completo" data-en="No thanks — I'll pay full price">No, gracias — pagaré precio completo</span></button>
     </div>
   </div>
 </div>
