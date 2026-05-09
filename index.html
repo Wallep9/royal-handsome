@@ -89,8 +89,17 @@
     .branch-flag{font-size:2rem;line-height:1}
 
     .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#111;color:white;font-size:.85rem;font-weight:600;padding:.75rem 1.5rem;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:999;white-space:nowrap}
-  
-    
+
+    /* ── SALE & Badges ── */
+    .sale-section{background:linear-gradient(135deg,var(--navy) 0%,#8b0000 60%,var(--red) 100%)}
+    .sale-card{background:white;border-radius:1rem;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s}
+    .sale-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.22)}
+    .badge-pct{position:absolute;top:.5rem;right:.5rem;background:var(--red);color:white;font-size:.65rem;font-weight:800;padding:.22rem .55rem;border-radius:4px;letter-spacing:.05em;z-index:2}
+    .badge-best{position:absolute;top:.5rem;left:.5rem;background:var(--gold);color:var(--navy);font-size:.6rem;font-weight:800;padding:.22rem .55rem;border-radius:4px;letter-spacing:.03em;z-index:2}
+    .badge-stock{position:absolute;bottom:.5rem;left:.5rem;background:#f59e0b;color:white;font-size:.6rem;font-weight:700;padding:.22rem .55rem;border-radius:4px;letter-spacing:.03em;z-index:2}
+    .price-orig{text-decoration:line-through;color:#9ca3af;font-size:.78rem;font-weight:400}
+    .price-sale-num{color:var(--red);font-weight:800;font-size:.95rem}
+
     /* ── Visor 3D ─────────────────────────────────────────────────────── */
     #lb{position:fixed;inset:0;z-index:900;background:linear-gradient(160deg,#0d0f1a 0%,#1a1830 60%,#0d1020 100%);
         display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -227,6 +236,12 @@ function setLang(lang) {
     const colorEl = card.querySelector('.text-xs.text-gray-500');
     if (colorEl) colorEl.textContent = lang === 'en' ? (COLOR_EN[colorSp]||colorSp) : colorSp;
   });
+  // Actualizar badges de stock (data-es / data-en)
+  document.querySelectorAll('.badge-stock').forEach(b => {
+    if (b.dataset.es && b.dataset.en) b.textContent = lang==='en' ? b.dataset.en : b.dataset.es;
+  });
+  // Re-renderizar mini-cards de SALE y Más vendidos con el nuevo idioma
+  if (typeof initSections === 'function') initSections();
 }
 
 /* ── Modal detalle producto ──────────────────────────────────────────────── */
@@ -419,6 +434,30 @@ function closeDetail() {
   </div><!-- /hero-flex-row -->
 </section>
 <div class="uj-stripe"></div>
+
+<!-- ═══════ SALE ═══════ -->
+<section class="sale-section py-10 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
+      <div>
+        <span class="font-royal" style="background:white;color:var(--red);font-weight:900;font-size:1.9rem;letter-spacing:.1em;padding:.1rem .9rem;border-radius:5px;display:inline-block">SALE</span>
+        <p class="i18n" style="color:rgba(255,255,255,.75);font-size:.88rem;margin-top:.4rem" data-es="Ofertas por tiempo limitado" data-en="Limited time offers">Ofertas por tiempo limitado</p>
+      </div>
+      <span style="font-size:2.6rem">🔥</span>
+    </div>
+    <div id="saleGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-5"></div>
+  </div>
+</section>
+
+<!-- ═══════ MÁS VENDIDOS ═══════ -->
+<section class="py-10 px-4" style="background:var(--off)">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="font-royal text-2xl font-bold mb-1 i18n" style="color:var(--navy)" data-es="⭐ Más vendidos" data-en="⭐ Best sellers">⭐ Más vendidos</h2>
+    <p class="i18n text-sm mb-6" style="color:#6b7280" data-es="Los favoritos de nuestros clientes" data-en="Our customers' favorites">Los favoritos de nuestros clientes</p>
+    <div id="bestGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
+  </div>
+</section>
+<div class="uj-stripe" style="margin-bottom:0"></div>
 
 <!-- CATÁLOGO -->
 <main id="catalogo" class="max-w-7xl mx-auto px-4 md:px-6 py-12">
@@ -1038,6 +1077,87 @@ const PRODUCTS = [
   {id:12,price:42,ref:"CHAQUETA GP",name:"Chaqueta GP",color:"Negro + Rojo",hex:"#111111",cat:"chaqueta",type:"upper_body",sizes:["S","M","L","XL"],desc:"Black and red hooded jacket, pima cotton, metal YKK zipper"},
 ];
 
+/* ── SALE / BEST-SELLERS / STOCK DATA ── */
+const SALE_DATA = [
+  {id:7, salePrice:14},   // T-Shirt London: $18 → $14  (22 % off)
+  {id:6, salePrice:16},   // Polo Básico:    $22 → $16  (27 % off)
+  {id:9, salePrice:27},   // Hoodie Liverpool Rojo: $35 → $27 (23 % off)
+];
+const BEST_IDS   = [1, 3, 4, 11];
+const LOW_STOCK_IDS = [2, 8, 10, 12];
+
+function _getCardEl(id){ return document.querySelector(`.product-card[data-id="${id}"]`); }
+
+function makeMiniCard(id, opts){
+  opts = opts || {};
+  const card = _getCardEl(id);
+  if (!card) return '';
+  const pr = PRODUCTS.find(p => p.id === id);
+  const origPrice = pr ? pr.price : parseFloat(card.dataset.price);
+  const imgSrc = card.querySelector('img') ? card.querySelector('img').src : '';
+  const nameSp  = card.dataset.name  || '';
+  const colorSp = card.dataset.color || '';
+  const displayName  = currentLang==='en' ? (NAME_EN[nameSp]||nameSp) : nameSp;
+  const displayColor = currentLang==='en' ? (COLOR_EN[colorSp]||colorSp) : colorSp;
+
+  let priceHtml;
+  if (opts.salePrice) {
+    const pct = Math.round((1 - opts.salePrice / origPrice) * 100);
+    const origFmt = currentLang==='en'
+      ? `$${origPrice} <span style="font-size:.65em;font-weight:400;color:#9ca3af">USD</span>`
+      : `$${Math.round(origPrice*COP_RATE/1000)*1000 < 1e9
+          ? (Math.round(origPrice*COP_RATE/1000)*1000).toLocaleString('es-CO')
+          : origPrice} <span style="font-size:.65em;font-weight:400;color:#9ca3af">COP</span>`;
+    const saleFmt = currentLang==='en'
+      ? `$${opts.salePrice} <span style="font-size:.65em;font-weight:400;color:#9ca3af">USD</span>`
+      : `$${(Math.round(opts.salePrice*COP_RATE/1000)*1000).toLocaleString('es-CO')} <span style="font-size:.65em;font-weight:400;color:#9ca3af">COP</span>`;
+    priceHtml = `<span class="price-orig">${origFmt}</span>&nbsp;<span class="price-sale-num">${saleFmt}</span>`;
+  } else {
+    priceHtml = `<span>${formatPrice(origPrice, currentLang)}</span>`;
+  }
+
+  const badgePct  = opts.salePrice
+    ? `<span class="badge-pct">-${Math.round((1-opts.salePrice/origPrice)*100)}%</span>` : '';
+  const badgeBest = opts.best
+    ? `<span class="badge-best">⭐ ${currentLang==='en' ? 'Best seller' : 'Más vendido'}</span>` : '';
+
+  return `<div class="sale-card" onclick="openDetail(_getCardEl(${id}))">
+  <div style="position:relative;background:#F0F1F8;aspect-ratio:1/1;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:8%">
+    <img src="${imgSrc}" style="width:100%;height:100%;object-fit:contain" loading="lazy">
+    ${badgePct}${badgeBest}
+  </div>
+  <div style="padding:.7rem 1rem .9rem">
+    <p style="font-size:.78rem;font-weight:700;color:var(--navy);margin-bottom:.1rem">${displayName}</p>
+    <p style="font-size:.7rem;color:#888;margin-bottom:.35rem">${displayColor}</p>
+    <div style="font-size:.85rem;font-weight:700">${priceHtml}</div>
+  </div>
+</div>`;
+}
+
+function initSections(){
+  const sg = document.getElementById('saleGrid');
+  if (sg) sg.innerHTML = SALE_DATA.map(s => makeMiniCard(s.id, {salePrice:s.salePrice})).join('');
+  const bg = document.getElementById('bestGrid');
+  if (bg) bg.innerHTML = BEST_IDS.map(id => makeMiniCard(id, {best:true})).join('');
+}
+
+function initBadges(){
+  const labelEs = '⚡ Últimas unidades';
+  const labelEn = '⚡ Last units';
+  LOW_STOCK_IDS.forEach(id => {
+    const card = _getCardEl(id);
+    if (!card) return;
+    const wrap = card.querySelector('.card-img-wrap');
+    if (!wrap || wrap.querySelector('.badge-stock')) return;
+    const b = document.createElement('span');
+    b.className = 'badge-stock';
+    b.dataset.es = labelEs;
+    b.dataset.en = labelEn;
+    b.textContent = currentLang==='en' ? labelEn : labelEs;
+    wrap.appendChild(b);
+  });
+}
+
 let stream=null, capturedBlob=null, customGarmentBlob=null, selectedProduct=null, isGenerating=false;
 
 /* ── Filtro categorías ── */
@@ -1507,6 +1627,8 @@ function closeLb(){
 
 document.addEventListener('DOMContentLoaded',()=>{
   setLang('es');
+  initBadges();
+  initSections();
 });
 </script>
 
