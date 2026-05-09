@@ -1138,7 +1138,7 @@ function makeMiniCard(id, opts){
     ? `<span class="badge-best">⭐ ${currentLang==='en' ? 'Best seller' : 'Más vendido'}</span>` : '';
 
   const _clickFn = opts.salePrice
-    ? `openDetailSale(${id},${opts.salePrice},${JSON.stringify(opts.saleSizes||[])})`
+    ? `openDetailSaleById(${id})`
     : `openDetail(_getCardEl(${id}))`;
   return `<div class="sale-card" onclick="${_clickFn}">
   <div style="position:relative;background:#F0F1F8;aspect-ratio:1/1;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:8%">
@@ -1178,6 +1178,11 @@ function initBadges(){
 }
 
 /* ── Modal SALE: tallas y precio de oferta ── */
+function openDetailSaleById(id) {
+  const s = SALE_DATA.find(d => d.id === id);
+  if (s) openDetailSale(s.id, s.salePrice, s.saleSizes || []);
+}
+
 function openDetailSale(id, salePrice, saleSizes) {
   const card = _getCardEl(id);
   if (!card) return;
