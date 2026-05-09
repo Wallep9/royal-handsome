@@ -47,7 +47,9 @@
     /* .try-badge removed */
 
     .color-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(0,0,0,.15);flex-shrink:0;display:inline-block}
-    .tag-size{display:inline-block;font-size:.7rem;font-weight:600;border:1px solid #e5e7eb;border-radius:4px;padding:.1rem .45rem;color:#555}
+    .tag-size{display:inline-block;font-size:.7rem;font-weight:600;border:1px solid #e5e7eb;border-radius:4px;padding:.1rem .45rem;color:#555;cursor:pointer;transition:all .15s;user-select:none}
+    .tag-size:hover{border-color:var(--navy);color:var(--navy)}
+    .tag-size.selected{background:var(--navy);color:white;border-color:var(--navy)}
 
     .btn-try{display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--navy);color:white;padding:.75rem 1rem;border-radius:.75rem;font-size:.85rem;font-weight:600;cursor:pointer;border:none;width:100%;transition:background .15s;font-family:inherit}
     .btn-try:hover{opacity:.88}
@@ -1474,9 +1476,34 @@ function closeCart() {
 }
 
 function addToCart(productId) {
-  // Open detail modal first so user must select a size before adding
   const card = document.querySelector(`[data-id="${productId}"]`);
-  if (card) openDetail(card);
+  if (!card) return;
+  // Check if a size is selected on the card
+  const selectedTag = card.querySelector('.tag-size.selected');
+  if (!selectedTag) {
+    // Highlight size row and show hint
+    const sizeRow = card.querySelector('.flex.flex-wrap');
+    if (sizeRow) {
+      sizeRow.style.transition = 'outline .15s';
+      sizeRow.style.outline = '2px solid var(--red)';
+      sizeRow.style.borderRadius = '6px';
+      setTimeout(() => { sizeRow.style.outline = ''; }, 1400);
+    }
+    showToast(currentLang === 'en' ? '⚠️ Choose a size first' : '⚠️ Elige una talla primero');
+    return;
+  }
+  const size = selectedTag.textContent.trim();
+  const p = PRODUCTS.find(x => x.id === productId);
+  if (!p) return;
+  const imgSrc = card.querySelector('img') ? card.querySelector('img').src : '';
+  const existing = cart.find(c => c.id === productId && c.size === size);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ id: p.id, name: p.name, color: p.color, size, price: p.price, imgSrc, qty: 1 });
+  }
+  updateCartBadge();
+  showToast('🛒 ' + p.name + ' (' + size + ') ' + (currentLang === 'en' ? 'added' : 'agregado'));
 }
 
 function removeFromCart(productId) {
@@ -1647,6 +1674,19 @@ document.addEventListener('DOMContentLoaded',()=>{
   initSections();
   updateBranchStatus();
   setInterval(updateBranchStatus, 60000); // refresh every minute
+
+  // Delegated: clicking a size tag on a catalog card selects/deselects it
+  document.getElementById('productGrid').addEventListener('click', function(e) {
+    const tag = e.target.closest('.tag-size');
+    if (!tag) return;
+    e.stopPropagation(); // don't open detail modal
+    const card = tag.closest('.product-card');
+    if (!card) return;
+    // Deselect all in this card, then select clicked one (toggle off if same)
+    const already = tag.classList.contains('selected');
+    card.querySelectorAll('.tag-size').forEach(t => t.classList.remove('selected'));
+    if (!already) tag.classList.add('selected');
+  });
 });
 </script>
 
