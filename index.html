@@ -140,6 +140,36 @@ function formatPrice(usd, lang) {
 
 /* ── Tablas de traducción de tarjetas ───────────────────────────────────── */
 const CAT_EN   = {Chaqueta:'Jacket',Polo:'Polo',Hoodie:'Hoodie','T-Shirt':'T-Shirt'};
+// Descripciones completas en español por id de producto
+const DESC_ES = {
+  1: 'Chaqueta Oxford con cremallera, cuello y pretina tejida en algodón, tela exterior taslan impermeable, forrada con algodón jersey. Dos bolsillos externos y uno interno con cremallera.',
+  2: 'Chaqueta Oxford con cremallera, cuello y pretina tejida en algodón, tela exterior taslan impermeable, forrada con algodón jersey. Dos bolsillos externos y uno interno con cremallera.',
+  3: 'Camiseta polo elaborada en 100% algodón pima, cuello y puños azul con líneas blancas, estampado blanco y azul en parte inferior naranja.',
+  4: 'Camiseta polo elaborada en 100% algodón pima, cuello y puños negro con líneas blancas, bordados en hilo extrafino, franja roja en pecho de algodón pique.',
+  5: 'Chaqueta en 100% algodón pima, cuello y puño azul con líneas blancas y vino tinto. Dos bolsillos externos y uno interno con cremallera YKK, bordado en pecho con hilo extrafino.',
+  6: 'Camiseta polo en 100% algodón pima, cuello y puño a tono con líneas azules, bordado azul con hilo extrafino. Pre-encogimiento para mantener el color en cada lavada.',
+  7: 'Camiseta cuello redondo en 100% algodón pima, estampado conmemorativo con iconos de Londres. Pre-encogimiento para mantener el color en cada lavada.',
+  8: 'Chaqueta en 100% algodón pima, cuello y puño azul con líneas blancas y vino tinto. Dos bolsillos externos y uno interno con cremallera YKK, bordado en pecho con hilo extrafino.',
+  9: 'Buzo hoodie en 100% algodón pima, capota azul, estampado tacto cero Hold de mayor absorción de color. Pre-encogimiento para mantener el color en cada lavada.',
+  10:'Buzo hoodie en 100% algodón pima, capota azul, estampado tacto cero Hold de mayor absorción de color. Pre-encogimiento para mantener el color en cada lavada.',
+  11:'Chaqueta en 100% algodón pima, capota azul, bolsillo canguro, cremallera YKK de metal, vena blanca separadora de colores en pecho, bordado extrafino.',
+  12:'Chaqueta en 100% algodón pima, capota azul, bolsillo canguro, cremallera YKK de metal, vena blanca separadora de colores en pecho, bordado extrafino.'
+};
+// Descripciones cortas en inglés (para el probador IA — se mantienen igual)
+const DESC_EN = {
+  1:'Dark navy waterproof jacket, taslan shell, knit collar and hem.',
+  2:'Beige waterproof jacket, taslan shell, knit collar and hem.',
+  3:'Blue and orange polo, 100% pima cotton, white accent stripes.',
+  4:'White, black and red polo, British Champs edition, 100% pima cotton.',
+  5:'Bottle green and navy jacket, 100% pima cotton, YKK zipper.',
+  6:'Mustard polo, 100% pima cotton, tonal collar with blue accents.',
+  7:'Yellow crew neck with iconic London print, 100% pima cotton.',
+  8:'Navy and burgundy jacket, 100% pima cotton, YKK zipper.',
+  9:'Red Liverpool hoodie, 100% pima cotton, blue hood.',
+  10:'Blue Liverpool hoodie, 100% pima cotton, blue hood.',
+  11:'Red and blue hooded jacket, 100% pima cotton, metal YKK zipper.',
+  12:'Black and red hooded jacket, 100% pima cotton, metal YKK zipper.'
+};
 const NAME_EN  = {
   'Chaqueta Oxford':'Oxford Jacket','Polo London':'London Polo',
   'Polo Champs':'Champs Polo','Chaqueta Home Run':'Home Run Jacket',
@@ -177,6 +207,11 @@ function setLang(lang) {
     if (dn && dn.dataset.nameSp) dn.textContent = lang === 'en' ? (NAME_EN[dn.dataset.nameSp] || dn.dataset.nameSp) : dn.dataset.nameSp;
     const dc = document.getElementById('detailColor');
     if (dc && dc.dataset.colorSp) dc.textContent = lang === 'en' ? (COLOR_EN[dc.dataset.colorSp] || dc.dataset.colorSp) : dc.dataset.colorSp;
+    const dd = document.getElementById('detailDesc');
+    if (dd && dd.dataset.productId) {
+      const pid = parseInt(dd.dataset.productId);
+      dd.textContent = lang === 'en' ? (DESC_EN[pid] || dd.textContent) : (DESC_ES[pid] || dd.textContent);
+    }
   }
   // Traducción completa de tarjetas: categoría, nombre, color
   document.querySelectorAll('article.product-card').forEach(card => {
@@ -225,7 +260,9 @@ function openDetail(cardEl) {
   detailColorEl.dataset.colorSp = p.color;
   detailColorEl.textContent = currentLang === 'en' ? (COLOR_EN[p.color] || p.color) : p.color;
   document.getElementById('detailColorDot').style.background = p.hex;
-  document.getElementById('detailDesc').textContent = p.desc;
+  const detailDescEl = document.getElementById('detailDesc');
+  detailDescEl.dataset.productId = id;
+  detailDescEl.textContent = currentLang === 'en' ? (DESC_EN[parseInt(id)] || p.desc) : (DESC_ES[parseInt(id)] || p.desc);
 
   const dp = document.getElementById('detailPrice');
   dp.dataset.usd = p.usd;
