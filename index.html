@@ -100,33 +100,6 @@
     .price-orig{text-decoration:line-through;color:#9ca3af;font-size:.78rem;font-weight:400}
     .price-sale-num{color:var(--red);font-weight:800;font-size:.95rem}
 
-    /* ── Visor 3D ─────────────────────────────────────────────────────── */
-    #lb{position:fixed;inset:0;z-index:900;background:linear-gradient(160deg,#0d0f1a 0%,#1a1830 60%,#0d1020 100%);
-        display:flex;flex-direction:column;align-items:center;justify-content:center;
-        opacity:0;pointer-events:none;transition:opacity .3s}
-    #lb.open{opacity:1;pointer-events:all}
-    #lb-scene{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
-              width:min(80vw,520px);height:min(80vh,600px);perspective:1000px}
-    #lb-img-wrap{transform-style:preserve-3d;cursor:grab;user-select:none;
-                 transition:transform .12s ease;will-change:transform}
-    #lb-img-wrap.dragging{transition:none;cursor:grabbing}
-    #lb-img{max-width:min(72vw,480px);max-height:min(65vh,520px);object-fit:contain;
-            display:block;pointer-events:none;
-            filter:drop-shadow(0 8px 24px rgba(0,0,0,.5)) drop-shadow(0 2px 4px rgba(0,0,0,.3))}
-    #lb-floor{position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);
-              width:220px;height:28px;
-              background:radial-gradient(ellipse,rgba(0,0,0,.55) 0%,transparent 72%);
-              border-radius:50%;transition:transform .12s ease,opacity .12s ease;pointer-events:none}
-    #lb-close{position:fixed;top:1.2rem;right:1.4rem;z-index:910;
-              background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
-              color:#fff;font-size:1.5rem;line-height:1;
-              width:2.6rem;height:2.6rem;border-radius:50%;
-              display:flex;align-items:center;justify-content:center;
-              cursor:pointer;transition:background .2s}
-    #lb-close:hover{background:rgba(255,255,255,.25)}
-    #lb-info{margin-top:1.5rem;text-align:center;color:rgba(255,255,255,.7);font-size:.85rem;letter-spacing:.04em}
-    #lb-hint{margin-top:.5rem;color:rgba(255,255,255,.35);font-size:.72rem;letter-spacing:.08em}
-
     /* ── WhatsApp */
     #waBtn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:800;display:flex;align-items:center;gap:.55rem;background:#25D366;color:#fff;font-size:.82rem;font-weight:600;padding:.7rem 1.15rem .7rem .85rem;border-radius:2rem;box-shadow:0 4px 18px rgba(37,211,102,.45);text-decoration:none;transition:transform .2s,box-shadow .2s}
     #waBtn:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(37,211,102,.6)}
@@ -361,11 +334,6 @@ function closeDetail() {
     
     /* Glare overlay desactivado */
     .card-tilt-glare{display:none}
-
-
-    /* Dynamic 3D shadow on lightbox garment */
-    #lb-wrap{perspective:1100px;display:flex;align-items:center;justify-content:center;width:100%;height:100%}
-    #lb-img.dragging{transition:none!important}
     
     /* ── Modal detalle producto ── */
     #detailModal{position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;
@@ -376,13 +344,9 @@ function closeDetail() {
                display:flex;gap:0;overflow:hidden;max-height:90vh;position:relative;
                box-shadow:0 32px 80px rgba(0,0,0,.35)}
     #detailImgCol{width:45%;background:#f8f9fb;display:flex;align-items:center;justify-content:center;
-                  padding:2.5rem;flex-shrink:0;cursor:zoom-in;position:relative}
-    #detailImgCol:hover::after{content:'🔍 Ver en 3D';position:absolute;bottom:1rem;left:50%;
-      transform:translateX(-50%);background:var(--navy);color:#fff;font-size:.72rem;
-      font-weight:700;padding:.35rem .9rem;border-radius:999px;white-space:nowrap;letter-spacing:.06em}
+                  padding:2.5rem;flex-shrink:0;position:relative}
     #detailImg{max-width:100%;max-height:320px;object-fit:contain;
                transition:transform .2s;pointer-events:none}
-    #detailImgCol:hover #detailImg{transform:scale(1.04)}
     #detailInfo{padding:2rem;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:.9rem}
     #detailClose{position:absolute;top:.9rem;right:1rem;background:none;border:none;
                  font-size:1.6rem;color:#9ca3af;cursor:pointer;line-height:1;z-index:1}
@@ -1071,15 +1035,7 @@ function closeDetail() {
     <p class="text-xs text-center" style="color:rgba(255,255,255,.25)"><span class="i18n" data-es="Colección 2026 · Probador Virtual con IA" data-en="Collection 2026 · AI Virtual Try-On">Colección 2026 · Probador Virtual con IA</span></p>
   </div>
 </footer>
-
-<!-- ── Visor 3D overlay ── -->
-<div id="lb" onclick="closeLb()">
-  <button id="lb-close" onclick="closeLb();event.stopPropagation()">×</button>
-  <div id="lb-scene">
-    <div id="lb-img-wrap">
-      <img id="lb-img" src="" alt="" draggable="false">
-    </div>
-    <div id="lb-floor"></div>
+<div id="lb-floor"></div>
   </div>
   <div id="lb-info"></div>
   <p id="lb-hint"><span class="i18n" data-es="Arrastra para girar · Scroll para zoom · Doble clic para centrar" data-en="Drag to rotate · Scroll to zoom · Double-click to center">Arrastra para girar · Scroll para zoom · Doble clic para centrar</span></p>
@@ -1593,167 +1549,6 @@ function showToast(msg) {
 
 /* Card hover handled by CSS only — no JS tilt */
 
-/* ── Visor 3D — click en prenda ──────────────────────────────────────────── */
-(function(){
-  var rotX=0, rotY=0, scale=1;
-  var velX=0, velY=0, rafId=null;
-  var dragging=false, startX, startY, startRotX, startRotY;
-  var lastX, lastY, lastT;
-  var pinchDist=null, pinchScale=1;
-
-  function wrap(){ return document.getElementById('lb-img-wrap'); }
-  function floor(){ return document.getElementById('lb-floor'); }
-
-  function applyTransform(animate){
-    var w=wrap(); if(!w) return;
-    w.style.transition = animate ? 'transform .12s ease' : 'none';
-    w.style.transform = 'rotateX('+rotX+'deg) rotateY('+rotY+'deg) scale('+scale+')';
-    // Sombra se mueve con la rotación — efecto 3D
-    var f=floor(); if(!f) return;
-    var sx = rotY * 1.2, sy = rotX * 0.6;
-    var scaleX = 1 + Math.abs(rotY)/180;
-    var scaleY = 1 - Math.abs(rotX)/360;
-    var opacity = 0.55 - Math.abs(rotX)/200;
-    f.style.transform = 'translateX(calc(-50% + '+sx+'px)) scaleX('+scaleX+') scaleY('+scaleY+')';
-    f.style.opacity = Math.max(0.1, opacity);
-    // Sombra drop-shadow en la imagen cambia con rotación
-    var img=document.getElementById('lb-img'); if(!img) return;
-    var dsx = rotY*0.4, dsy = 20-rotX*0.3;
-    var blur = 24+Math.abs(rotY)*0.3;
-    img.style.filter='drop-shadow('+dsx+'px '+dsy+'px '+blur+'px rgba(0,0,0,.6)) drop-shadow(0 2px 6px rgba(0,0,0,.4))';
-  }
-
-  function stopInertia(){ if(rafId){ cancelAnimationFrame(rafId); rafId=null; } }
-
-  function inertia(){
-    velX*=0.90; velY*=0.90;
-    rotY+=velX; rotX-=velY;
-    rotX=Math.max(-75,Math.min(75,rotX));
-    applyTransform(false);
-    if(Math.abs(velX)>0.05||Math.abs(velY)>0.05) rafId=requestAnimationFrame(inertia);
-    else rafId=null;
-  }
-
-  // Mouse
-  var scene=document.getElementById('lb-scene');
-  scene.addEventListener('mousedown',function(e){
-    e.preventDefault();
-    dragging=true; stopInertia();
-    startX=e.clientX; startY=e.clientY;
-    startRotX=rotX; startRotY=rotY;
-    lastX=e.clientX; lastY=e.clientY; lastT=Date.now();
-    velX=0; velY=0;
-    wrap().classList.add('dragging');
-  });
-  document.addEventListener('mousemove',function(e){
-    if(!dragging) return;
-    var now=Date.now(), dt=Math.max(1,now-lastT);
-    var dx=e.clientX-startX, dy=e.clientY-startY;
-    rotY=startRotY+dx*0.4;
-    rotX=Math.max(-75,Math.min(75,startRotX-dy*0.3));
-    velX=(e.clientX-lastX)/dt*8;
-    velY=(e.clientY-lastY)/dt*8;
-    lastX=e.clientX; lastY=e.clientY; lastT=now;
-    applyTransform(false);
-  });
-  document.addEventListener('mouseup',function(){
-    if(!dragging) return;
-    dragging=false;
-    wrap().classList.remove('dragging');
-    requestAnimationFrame(inertia);
-  });
-
-  // Scroll zoom
-  scene.addEventListener('wheel',function(e){
-    e.preventDefault();
-    scale=Math.max(0.4,Math.min(4,scale-e.deltaY*0.002));
-    applyTransform(false);
-  },{passive:false});
-
-  // Doble clic → centrar
-  scene.addEventListener('dblclick',function(){
-    rotX=0; rotY=0; scale=1; velX=0; velY=0; stopInertia();
-    applyTransform(true);
-  });
-
-  // Touch
-  scene.addEventListener('touchstart',function(e){
-    stopInertia();
-    if(e.touches.length===1){
-      dragging=true;
-      startX=e.touches[0].clientX; startY=e.touches[0].clientY;
-      startRotX=rotX; startRotY=rotY;
-      lastX=startX; lastY=startY; lastT=Date.now();
-      velX=0; velY=0;
-    } else if(e.touches.length===2){
-      dragging=false;
-      pinchDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-      pinchScale=scale;
-    }
-  },{passive:true});
-  scene.addEventListener('touchmove',function(e){
-    e.preventDefault();
-    if(e.touches.length===1&&dragging){
-      var now=Date.now(),dt=Math.max(1,now-lastT);
-      var dx=e.touches[0].clientX-startX, dy=e.touches[0].clientY-startY;
-      rotY=startRotY+dx*0.4;
-      rotX=Math.max(-75,Math.min(75,startRotX-dy*0.3));
-      velX=(e.touches[0].clientX-lastX)/dt*8;
-      velY=(e.touches[0].clientY-lastY)/dt*8;
-      lastX=e.touches[0].clientX; lastY=e.touches[0].clientY; lastT=now;
-      applyTransform(false);
-    } else if(e.touches.length===2&&pinchDist){
-      var d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-      scale=Math.max(0.4,Math.min(4,pinchScale*(d/pinchDist)));
-      applyTransform(false);
-    }
-  },{passive:false});
-  scene.addEventListener('touchend',function(e){
-    if(e.touches.length<2) pinchDist=null;
-    if(e.touches.length===0){ dragging=false; requestAnimationFrame(inertia); }
-  });
-
-  // Hover parallax suave cuando no se arrastra
-  scene.addEventListener('mousemove',function(e){
-    if(dragging) return;
-    var r=scene.getBoundingClientRect();
-    var dx=(e.clientX-r.left-r.width/2)/(r.width/2);
-    var dy=(e.clientY-r.top-r.height/2)/(r.height/2);
-    rotY=dx*8; rotX=-dy*5;
-    applyTransform(true);
-  });
-  scene.addEventListener('mouseleave',function(){
-    if(dragging) return;
-    rotX=0; rotY=0; applyTransform(true);
-  });
-
-  // Teclas
-  document.addEventListener('keydown',function(e){
-    if(!document.getElementById('lb').classList.contains('open')) return;
-    if(e.key==='Escape'){ closeLb(); }
-    if(e.key==='ArrowLeft'){ rotY-=15; applyTransform(true); }
-    if(e.key==='ArrowRight'){ rotY+=15; applyTransform(true); }
-    if(e.key==='ArrowUp'){ rotX=Math.max(-75,rotX-10); applyTransform(true); }
-    if(e.key==='ArrowDown'){ rotX=Math.min(75,rotX+10); applyTransform(true); }
-  });
-
-  window._lb3d = { reset: function(){ rotX=0;rotY=0;scale=1;velX=0;velY=0;stopInertia();applyTransform(false); } };
-})();
-
-function openLb(src, name, price){
-  var img=document.getElementById('lb-img');
-  var info=document.getElementById('lb-info');
-  img.src=src;
-  if(info) info.textContent=(name||'')+(price?' · '+price:'');
-  if(window._lb3d) window._lb3d.reset();
-  document.getElementById('lb').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeLb(){
-  document.getElementById('lb').classList.remove('open');
-  document.body.style.overflow='';
-}
-
 document.addEventListener('DOMContentLoaded',()=>{
   setLang('es');
   initBadges();
@@ -1767,8 +1562,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 <div id="detailModal" onclick="if(event.target===this)closeDetail()">
   <div id="detailBox">
     <button id="detailClose" onclick="closeDetail()">×</button>
-    <!-- Columna imagen: click abre visor 3D -->
-    <div id="detailImgCol" onclick="openLb(document.getElementById('detailImg').src)">
+    <!-- Columna imagen -->
+    <div id="detailImgCol">
       <img id="detailImg" src="" alt="">
     </div>
     <!-- Columna info -->
