@@ -344,9 +344,32 @@ function closeDetail() {
                display:flex;gap:0;overflow:hidden;max-height:90vh;position:relative;
                box-shadow:0 32px 80px rgba(0,0,0,.35)}
     #detailImgCol{width:45%;background:#f8f9fb;display:flex;align-items:center;justify-content:center;
-                  padding:2.5rem;flex-shrink:0;position:relative}
+                  padding:2.5rem;flex-shrink:0;position:relative;cursor:zoom-in}
+    #detailImgCol:hover::after{content:'🔍 Zoom';position:absolute;bottom:.8rem;left:50%;
+      transform:translateX(-50%);background:var(--navy);color:#fff;font-size:.7rem;
+      font-weight:700;padding:.3rem .8rem;border-radius:999px;white-space:nowrap;
+      letter-spacing:.06em;pointer-events:none}
+    #detailImgCol:hover #detailImg{transform:scale(1.04)}
     #detailImg{max-width:100%;max-height:320px;object-fit:contain;
                transition:transform .2s;pointer-events:none}
+
+    /* ── Zoom lightbox ── */
+    #imgZoom{position:fixed;inset:0;z-index:950;background:rgba(0,0,0,.9);
+             display:flex;align-items:center;justify-content:center;
+             opacity:0;pointer-events:none;transition:opacity .25s;cursor:zoom-out}
+    #imgZoom.open{opacity:1;pointer-events:all}
+    #imgZoom img{max-width:90vw;max-height:88vh;object-fit:contain;
+                 transition:transform .15s ease;transform-origin:center;
+                 border-radius:.5rem;pointer-events:none;user-select:none}
+    #imgZoomClose{position:fixed;top:1rem;right:1.2rem;background:rgba(255,255,255,.12);
+                  border:1px solid rgba(255,255,255,.25);color:#fff;font-size:1.5rem;
+                  width:2.5rem;height:2.5rem;border-radius:50%;display:flex;
+                  align-items:center;justify-content:center;cursor:pointer;
+                  transition:background .2s;z-index:951;line-height:1}
+    #imgZoomClose:hover{background:rgba(255,255,255,.28)}
+    #imgZoomHint{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);
+                 color:rgba(255,255,255,.4);font-size:.72rem;letter-spacing:.08em;
+                 pointer-events:none;white-space:nowrap}
     #detailInfo{padding:2rem;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:.9rem}
     #detailClose{position:absolute;top:.9rem;right:1rem;background:none;border:none;
                  font-size:1.6rem;color:#9ca3af;cursor:pointer;line-height:1;z-index:1}
@@ -1035,10 +1058,12 @@ function closeDetail() {
     <p class="text-xs text-center" style="color:rgba(255,255,255,.25)"><span class="i18n" data-es="Colección 2026 · Probador Virtual con IA" data-en="Collection 2026 · AI Virtual Try-On">Colección 2026 · Probador Virtual con IA</span></p>
   </div>
 </footer>
-<div id="lb-floor"></div>
-  </div>
-  <div id="lb-info"></div>
-  <p id="lb-hint"><span class="i18n" data-es="Arrastra para girar · Scroll para zoom · Doble clic para centrar" data-en="Drag to rotate · Scroll to zoom · Double-click to center">Arrastra para girar · Scroll para zoom · Doble clic para centrar</span></p>
+
+<!-- ── Zoom lightbox ── -->
+<div id="imgZoom" onclick="closeZoom()">
+  <button id="imgZoomClose" onclick="closeZoom();event.stopPropagation()">×</button>
+  <img id="imgZoomImg" src="" alt="">
+  <p id="imgZoomHint"><span class="i18n" data-es="Scroll para zoom · Clic para cerrar" data-en="Scroll to zoom · Click to close">Scroll para zoom · Clic para cerrar</span></p>
 </div>
 
 <script>
@@ -1549,6 +1574,61 @@ function showToast(msg) {
 
 /* Card hover handled by CSS only — no JS tilt */
 
+/* ── Zoom lightbox ── */
+(function(){
+  var zoomScale = 1;
+  var zoomImg = null;
+
+  window.openZoom = function(src) {
+    zoomScale = 1;
+    zoomImg = document.getElementById('imgZoomImg');
+    zoomImg.src = src;
+    zoomImg.style.transform = 'scale(1)';
+    document.getElementById('imgZoom').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeZoom = function() {
+    document.getElementById('imgZoom').classList.remove('open');
+    document.body.style.overflow = '';
+    zoomScale = 1;
+  };
+
+  // Scroll to zoom
+  document.addEventListener('wheel', function(e) {
+    if (!document.getElementById('imgZoom').classList.contains('open')) return;
+    e.preventDefault();
+    zoomScale = Math.max(0.5, Math.min(5, zoomScale - e.deltaY * 0.003));
+    if (zoomImg) zoomImg.style.transform = 'scale(' + zoomScale + ')';
+  }, { passive: false });
+
+  // Pinch to zoom (mobile)
+  var lastPinch = null;
+  document.addEventListener('touchstart', function(e) {
+    if (!document.getElementById('imgZoom').classList.contains('open')) return;
+    if (e.touches.length === 2)
+      lastPinch = Math.hypot(e.touches[0].clientX - e.touches[1].clientX,
+                             e.touches[0].clientY - e.touches[1].clientY);
+  }, { passive: true });
+  document.addEventListener('touchmove', function(e) {
+    if (!document.getElementById('imgZoom').classList.contains('open')) return;
+    if (e.touches.length === 2 && lastPinch) {
+      e.preventDefault();
+      var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX,
+                         e.touches[0].clientY - e.touches[1].clientY);
+      zoomScale = Math.max(0.5, Math.min(5, zoomScale * (d / lastPinch)));
+      lastPinch = d;
+      if (zoomImg) zoomImg.style.transform = 'scale(' + zoomScale + ')';
+    }
+  }, { passive: false });
+  document.addEventListener('touchend', function() { lastPinch = null; });
+
+  // ESC to close
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeZoom();
+  });
+})();
+
 document.addEventListener('DOMContentLoaded',()=>{
   setLang('es');
   initBadges();
@@ -1562,8 +1642,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 <div id="detailModal" onclick="if(event.target===this)closeDetail()">
   <div id="detailBox">
     <button id="detailClose" onclick="closeDetail()">×</button>
-    <!-- Columna imagen -->
-    <div id="detailImgCol">
+    <!-- Columna imagen: click abre zoom -->
+    <div id="detailImgCol" onclick="openZoom(document.getElementById('detailImg').src)">
       <img id="detailImg" src="" alt="">
     </div>
     <!-- Columna info -->
