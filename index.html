@@ -291,19 +291,15 @@ function openDetail(cardEl) {
   detailDescEl.textContent = currentLang === 'en' ? (DESC_EN[parseInt(id)] || p.desc) : (DESC_ES[parseInt(id)] || p.desc);
 
   const dp = document.getElementById('detailPrice');
-  const saleUsd = cardEl.dataset.salePrice ? parseFloat(cardEl.dataset.salePrice) : null;
-  if (saleUsd) {
-    const pct = Math.round((1 - saleUsd / parseFloat(p.usd)) * 100);
-    dp.dataset.usd    = String(saleUsd);
-    dp.dataset.origUsd = p.usd;
-    dp.innerHTML = `<span class="price-orig">${formatPrice(parseFloat(p.usd), currentLang)}</span> <span class="price-sale-num">${formatPrice(saleUsd, currentLang)}</span> <span style="background:var(--red);color:white;font-size:.5em;font-weight:800;padding:.15em .45em;border-radius:4px;vertical-align:middle">-${pct}%</span>`;
-  } else {
-    dp.dataset.usd    = p.usd;
-    dp.dataset.origUsd = '';
-    dp.innerHTML = formatPrice(parseFloat(p.usd), currentLang);
-  }
+  dp.dataset.usd     = p.usd;
+  dp.dataset.origUsd = '';           // clear any previous sale marker
+  dp.innerHTML = formatPrice(parseFloat(p.usd), currentLang);
 
-  // Tallas
+  // Remove sale-sizes note if left over from a previous sale opening
+  const prevNote = document.getElementById('saleSizeNote');
+  if (prevNote) prevNote.remove();
+
+  // Tallas (todas a precio normal)
   const sizesEl = document.getElementById('detailSizes');
   sizesEl.innerHTML = p.sizes.map(s =>
     `<button onclick="selectDetailSize('${s}',this)"
@@ -312,11 +308,12 @@ function openDetail(cardEl) {
   ).join('');
 
   // Botones acción
+  const _normalPrice = parseFloat(p.usd);
   document.getElementById('detailAddCart').onclick = () => {
     if (!detailSelectedSize) { showToast(currentLang==='en'?'⚠️ Choose a size':'⚠️ Elige una talla'); return; }
     const existing = cart.find(c => c.id == id && c.size === detailSelectedSize);
     if (existing) { existing.qty++; }
-    else { cart.push({ id: parseInt(id), name: p.name, color: p.color, price: parseFloat(p.usd), imgSrc: p.img, qty: 1, size: detailSelectedSize }); }
+    else { cart.push({ id: parseInt(id), name: p.name, color: p.color, price: _normalPrice, imgSrc: p.img, qty: 1, size: detailSelectedSize }); }
     updateCartBadge();
     showToast('🛒 ' + (currentLang==='en'?NAME_EN[p.name]||p.name:p.name) + ' (' + detailSelectedSize + ') ' + (currentLang==='en'?'added':'agregado'));
     closeDetail();
@@ -648,7 +645,7 @@ function closeDetail() {
         </div>
       </div>
     </article>
-    <article class="product-card" data-cat="polo" data-id="6" data-price="22" data-sale-price="16"
+    <article class="product-card" data-cat="polo" data-id="6" data-price="22"
              data-img="polo-basico-mostaza" data-desc="Mustard polo, 100% pima cotton, tonal collar" data-type="upper_body"
              data-name="Polo Básico" data-color="Mostaza" onclick="if(!event.target.closest('button'))openDetail(this)">
       <div class="card-tilt-glare"></div>
@@ -678,7 +675,7 @@ function closeDetail() {
         </div>
       </div>
     </article>
-    <article class="product-card" data-cat="tshirt" data-id="7" data-price="18" data-sale-price="14"
+    <article class="product-card" data-cat="tshirt" data-id="7" data-price="18"
              data-img="tshirt-london" data-desc="Yellow crew neck with iconic London print, pima cotton" data-type="upper_body"
              data-name="T-Shirt London" data-color="Amarillo" onclick="if(!event.target.closest('button'))openDetail(this)">
       <div class="card-tilt-glare"></div>
@@ -738,7 +735,7 @@ function closeDetail() {
         </div>
       </div>
     </article>
-    <article class="product-card" data-cat="hoodie" data-id="9" data-price="35" data-sale-price="27"
+    <article class="product-card" data-cat="hoodie" data-id="9" data-price="35"
              data-img="hoodie-liverpool-rojo" data-desc="Red hoodie Liverpool England print, pima cotton" data-type="upper_body"
              data-name="Hoodie Liverpool" data-color="Rojo" onclick="if(!event.target.closest('button'))openDetail(this)">
       <div class="card-tilt-glare"></div>
@@ -1098,9 +1095,9 @@ const PRODUCTS = [
 
 /* ── SALE / BEST-SELLERS / STOCK DATA ── */
 const SALE_DATA = [
-  {id:7, salePrice:14},   // T-Shirt London: $18 → $14  (22 % off)
-  {id:6, salePrice:16},   // Polo Básico:    $22 → $16  (27 % off)
-  {id:9, salePrice:27},   // Hoodie Liverpool Rojo: $35 → $27 (23 % off)
+  {id:7, salePrice:14, saleSizes:['XXL','XXXL']},   // T-Shirt London: $18 → $14
+  {id:6, salePrice:16, saleSizes:['XXL','XXXL']},   // Polo Básico:    $22 → $16
+  {id:9, salePrice:27, saleSizes:['XXL']},           // Hoodie Liverpool Rojo: $35 → $27
 ];
 const BEST_IDS   = [1, 3, 4, 11];
 const LOW_STOCK_IDS = [2, 8, 10, 12];
@@ -1140,7 +1137,10 @@ function makeMiniCard(id, opts){
   const badgeBest = opts.best
     ? `<span class="badge-best">⭐ ${currentLang==='en' ? 'Best seller' : 'Más vendido'}</span>` : '';
 
-  return `<div class="sale-card" onclick="openDetail(_getCardEl(${id}))">
+  const _clickFn = opts.salePrice
+    ? `openDetailSale(${id},${opts.salePrice},${JSON.stringify(opts.saleSizes||[])})`
+    : `openDetail(_getCardEl(${id}))`;
+  return `<div class="sale-card" onclick="${_clickFn}">
   <div style="position:relative;background:#F0F1F8;aspect-ratio:1/1;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:8%">
     <img src="${imgSrc}" style="width:100%;height:100%;object-fit:contain" loading="lazy">
     ${badgePct}${badgeBest}
@@ -1155,7 +1155,7 @@ function makeMiniCard(id, opts){
 
 function initSections(){
   const sg = document.getElementById('saleGrid');
-  if (sg) sg.innerHTML = SALE_DATA.map(s => makeMiniCard(s.id, {salePrice:s.salePrice})).join('');
+  if (sg) sg.innerHTML = SALE_DATA.map(s => makeMiniCard(s.id, {salePrice:s.salePrice, saleSizes:s.saleSizes})).join('');
   const bg = document.getElementById('bestGrid');
   if (bg) bg.innerHTML = BEST_IDS.map(id => makeMiniCard(id, {best:true})).join('');
 }
@@ -1175,6 +1175,54 @@ function initBadges(){
     b.textContent = currentLang==='en' ? labelEn : labelEs;
     wrap.appendChild(b);
   });
+}
+
+/* ── Modal SALE: tallas y precio de oferta ── */
+function openDetailSale(id, salePrice, saleSizes) {
+  const card = _getCardEl(id);
+  if (!card) return;
+  // openDetail sets up image, name, color, desc, ref, modal open
+  openDetail(card);
+
+  // Override price → sale format
+  const origPrice = parseFloat(card.dataset.price);
+  const pct = Math.round((1 - salePrice / origPrice) * 100);
+  const dp = document.getElementById('detailPrice');
+  dp.dataset.usd     = String(salePrice);
+  dp.dataset.origUsd = String(origPrice);
+  dp.innerHTML = `<span class="price-orig">${formatPrice(origPrice, currentLang)}</span> <span class="price-sale-num">${formatPrice(salePrice, currentLang)}</span> <span style="background:var(--red);color:white;font-size:.5em;font-weight:800;padding:.15em .45em;border-radius:4px;vertical-align:middle">-${pct}%</span>`;
+
+  // Override sizes → only sale sizes
+  const sizesEl = document.getElementById('detailSizes');
+  sizesEl.innerHTML = saleSizes.map(s =>
+    `<button onclick="selectDetailSize('${s}',this)"
+      style="padding:.3rem .75rem;border-radius:.4rem;border:1.5px solid #e5e7eb;
+             background:#fff;font-size:.8rem;font-weight:600;color:#374151;cursor:pointer">${s}</button>`
+  ).join('');
+  // Add explanatory note
+  const prevNote = document.getElementById('saleSizeNote');
+  if (prevNote) prevNote.remove();
+  const note = document.createElement('p');
+  note.id = 'saleSizeNote';
+  note.style.cssText = 'font-size:.7rem;color:#9ca3af;margin-top:.4rem;font-style:italic';
+  note.textContent = currentLang === 'en'
+    ? '* Sale price applies to these sizes only'
+    : '* Precio de oferta aplica solo a estas tallas';
+  sizesEl.insertAdjacentElement('afterend', note);
+
+  // Override cart handler → use sale price
+  const nameSp  = card.dataset.name  || '';
+  const colorSp = card.dataset.color || '';
+  const imgSrc  = card.querySelector('img')?.src || '';
+  document.getElementById('detailAddCart').onclick = () => {
+    if (!detailSelectedSize) { showToast(currentLang==='en'?'⚠️ Choose a size':'⚠️ Elige una talla'); return; }
+    const existing = cart.find(c => c.id == id && c.size === detailSelectedSize);
+    if (existing) { existing.qty++; }
+    else { cart.push({ id: parseInt(id), name: nameSp, color: colorSp, price: salePrice, imgSrc, qty: 1, size: detailSelectedSize }); }
+    updateCartBadge();
+    showToast('🛒 ' + (currentLang==='en'?(NAME_EN[nameSp]||nameSp):nameSp) + ' (' + detailSelectedSize + ') ' + (currentLang==='en'?'added':'agregado'));
+    closeDetail();
+  };
 }
 
 /* ── Branch open/closed status ── */
